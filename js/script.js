@@ -3,6 +3,11 @@ Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
 
+
+/*** 
+*  Show a list of 9 student cards on the page.
+***/
+
 function showPage (list, page) {
    const studentList = document.querySelector(".student-list");
    let pageStart = (page * 9) - 9;
@@ -20,10 +25,14 @@ function showPage (list, page) {
                <span class="date">Joined ${student.registered.date}</span>
             </div>
          </li>
-         `
+         `;
       } 
    });
 }
+
+/***  
+*  Add pagination buttons and display new active page on click. 
+***/
 
 function addPagination (list) {
    const linkList = document.querySelector(".link-list"); 
@@ -34,10 +43,10 @@ function addPagination (list) {
       <li>
          <button type="button" class="pagination">${i}</button>
       </li>
-      `
+      `;
    }
-   const active = document.querySelector("button")
-   active.className = "active"
+   const active = document.querySelector("button");
+   active.className = "active";
    
    linkList.addEventListener("click", e => {
       const target = e.target;
@@ -47,15 +56,22 @@ function addPagination (list) {
          document.querySelector(".active").className = "";
          target.className = "active";
 
-         studentList.innerHTML = ""
+         studentList.innerHTML = "";
          showPage(list, newPage);
       }
-   })
+   });
 }
 
-showPage(data, 1);
-addPagination(data)
+/*** 
+*  Call functions to print student list to page and pass in "data array"
+ ***/
 
+showPage(data, 1);
+addPagination(data);
+
+/***
+*  Add a search bar to the page
+***/
 function addSearchBar() {
    const header = document.querySelector("header");
    header.innerHTML += `
@@ -68,23 +84,60 @@ function addSearchBar() {
 }
 addSearchBar();
 
+/*** 
+*  Function to display only "name" matches when user types in search bar
+***/
 
 const searchBar = document.getElementById("search");
-const submit = document.getElementById("search-button")
+const submit = document.getElementById("search-button");
+
+function searchFunction(list, page) {
+   const studentList = document.querySelector(".student-list");
+   let pageStart = (page * 9) - 9;
+   let pageEnd = page * 9;
+   let filteredList = [];
+   list.forEach(function(student, index) {
+      if(student.name.first.toLowerCase().includes(searchBar.value.toLowerCase()) || student.name.last.toLowerCase().includes(searchBar.value.toLowerCase())){
+         filteredList.push(student);
+      }
+   });
+   filteredList.forEach(function(student, index){
+      if (index >= pageStart && index < pageEnd) {
+         studentList.innerHTML += `
+         <li class="student-item cf">
+         <div class="student-details">
+         <img class="avatar" src="${student.picture.thumbnail}" alt="profile-picture">
+         <h3>${student.name.first}  ${student.name.last}</h3>
+         <span class="email">${student.email}</span>
+         </div>
+         <div class="joined-details">
+         <span class="date">Joined ${student.registered.date}</span>
+         </div>
+         </li>
+         `;
+      }
+   });
+   
+   searchPagination(filteredList);
+} 
+
+/*** 
+*  Display the correct number of pages based on searchFunction() results
+***/
 
 function searchPagination (filteredList) {
    const linkList = document.querySelector(".link-list"); 
    const numberOfPages = Math.ceil(filteredList.length / 9);
-   linkList.innerHTML = ""
+   linkList.innerHTML = "";
    for (let i = 1; i <= numberOfPages; i++) {
       linkList.innerHTML += `
       <li>
          <button type="button" class="pagination">${i}</button>
       </li>
-      `
+      `;
    }
-   const active = document.querySelector("button")
-   active.className = "active"
+   const active = document.querySelector("button");
+   active.className = "active";
    
    linkList.addEventListener("click", e => {
       const target = e.target;
@@ -94,43 +147,15 @@ function searchPagination (filteredList) {
          document.querySelector(".active").className = "";
          target.className = "active";
 
-         studentList.innerHTML = ""
+         studentList.innerHTML = "";
          showPage(filteredList, newPage);
       }
-   })
+   });
 }
 
-function searchFunction(list, page) {
-      const studentList = document.querySelector(".student-list");
-      let pageStart = (page * 9) - 9;
-      let pageEnd = page * 9;
-      let filteredList = []
-      list.forEach(function(student, index) {
-         if(student.name.first.toLowerCase().includes(searchBar.value.toLowerCase()) || student.name.last.toLowerCase().includes(searchBar.value.toLowerCase())){
-            filteredList.push(student)
-         }
-      });
-      filteredList.forEach(function(student, index){
-         if (index >= pageStart && index < pageEnd) {
-               studentList.innerHTML += `
-               <li class="student-item cf">
-                  <div class="student-details">
-                     <img class="avatar" src="${student.picture.thumbnail}" alt="profile-picture">
-                     <h3>${student.name.first}  ${student.name.last}</h3>
-                     <span class="email">${student.email}</span>
-                  </div>
-                  <div class="joined-details">
-                     <span class="date">Joined ${student.registered.date}</span>
-                  </div>
-               </li>
-               `
-            }
-         });
-          
-         searchPagination(filteredList)
-   } 
-
-
+/*** 
+*  Event listeners to handle both typing in the search bar and clicking the search icon
+***/
 
 searchBar.addEventListener("keyup", () => {
    const studentList = document.querySelector(".student-list");   
@@ -146,6 +171,6 @@ submit.addEventListener("click", () =>{
    studentList.innerHTML = "";
    searchFunction(data, 1);
    if (studentList.innerHTML === "") {
-      studentList.innerHTML += `<p style="font-size: 2rem; text-align: center"> No results found</p>`
+      studentList.innerHTML += `<p style="font-size: 2rem; text-align: center"> No results found</p>`;
    }
 })
