@@ -37,15 +37,15 @@ function showPage (list, page) {
 function addPagination (list) {
    const linkList = document.querySelector(".link-list"); 
    const numberOfPages = Math.ceil(list.length / 9);
-   const active = document.querySelector("button");
-   linkList.innerHTML = ""
+   linkList.innerHTML = "";
    for (let i = 1; i <= numberOfPages; i++) {
       linkList.innerHTML += `
       <li>
-         <button type="button" class="pagination">${i}</button>
+      <button type="button" class="pagination">${i}</button>
       </li>
       `;
    }
+   const active = document.querySelector("button");
    active.className = "active";
    
    linkList.addEventListener("click", e => {
