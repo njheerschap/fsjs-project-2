@@ -45,7 +45,7 @@ function addPagination (list) {
       </li>
       `;
    }
-   const active = document.querySelector("button");
+   const active = document.querySelector(".link-list button");
    active.className = "active";
    
    linkList.addEventListener("click", e => {
@@ -164,6 +164,8 @@ searchBar.addEventListener("keyup", () => {
    if (studentList.innerHTML === "") {
       studentList.innerHTML += `<p style="font-size: 2rem; text-align: center"> No results found</p>`;
    }
+   const active = document.querySelector(".link-list button");
+   active.className = "active";
 })
 
 submit.addEventListener("click", () =>{
@@ -173,4 +175,6 @@ submit.addEventListener("click", () =>{
    if (studentList.innerHTML === "") {
       studentList.innerHTML += `<p style="font-size: 2rem; text-align: center"> No results found</p>`;
    }
+   const active = document.querySelector(".link-list button");
+   active.className = "active";
 })
