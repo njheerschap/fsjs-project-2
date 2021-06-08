@@ -165,7 +165,9 @@ searchBar.addEventListener("keyup", () => {
       studentList.innerHTML += `<p style="font-size: 2rem; text-align: center"> No results found</p>`;
    }
    const active = document.querySelector(".link-list button");
-   active.className = "active";
+   if(active) {
+      active.className = "active";
+   }
 })
 
 submit.addEventListener("click", () =>{
@@ -176,5 +178,7 @@ submit.addEventListener("click", () =>{
       studentList.innerHTML += `<p style="font-size: 2rem; text-align: center"> No results found</p>`;
    }
    const active = document.querySelector(".link-list button");
-   active.className = "active";
+   if(active) {
+      active.className = "active";
+   }
 })
